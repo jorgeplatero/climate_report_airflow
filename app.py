@@ -29,7 +29,7 @@ def carrega_dados_recentes(pasta_dados):
         if len(arquivos) >= 2:
             path_1 = os.path.join(caminho_pasta, arquivos[0])
             df_1 = pd.read_csv(path_1)
-            path_2 = os.path.join(caminho_pasta, arquivos[1])
+            path_2 = os.path.join(caminho_pasta, arquivos[2])
             df_2 = pd.read_csv(path_2)
             return df_1, df_2
         else:
@@ -60,6 +60,7 @@ if clima_descricao is not None and clima_temperaturas is not None:
     clima_temperaturas['datetime'] = pd.to_datetime(clima_temperaturas['datetime'])
     clima = pd.merge(clima_descricao, clima_temperaturas, on='datetime', how='left')
     #calculando temperatura mínima, máxima e média
+    st.dataframe(clima)
     temp_min = clima['temp'].min()
     temp_max = clima['temp'].max()
     temp_media = clima['temp'].mean()
