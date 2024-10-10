@@ -21,7 +21,11 @@ def carrega_dados_recentes(pasta_dados):
     '''
         Carrega arquivos CSV mais recentes
     '''
-    pastas = [f for f in os.listdir(pasta_dados) if os.path.isdir(os.path.join(pasta_dados, f))]
+    pastas = False
+    try:
+        pastas = [f for f in os.listdir(pasta_dados) if os.path.isdir(os.path.join(pasta_dados, f))]
+    except:
+        pass
     if pastas:
         pasta_mais_recente = max(pastas, key=lambda x: os.path.getmtime(os.path.join(pasta_dados, x)))
         caminho_pasta = os.path.join(pasta_dados, pasta_mais_recente)
