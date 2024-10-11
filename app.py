@@ -25,12 +25,11 @@ def carrega_dados_recentes(pasta_dados):
         pasta_mais_recente = max(pastas, key=lambda x: os.path.getmtime(os.path.join(pasta_dados, x)))
         caminho_pasta = os.path.join(pasta_dados, pasta_mais_recente)
         arquivos = [f for f in os.listdir(caminho_pasta) if f.endswith('.csv')]
-        df_1 = pd.read_csv(os.path.join(caminho_pasta, arquivos[0]))
-        df_2 = pd.read_csv(os.path.join(caminho_pasta, arquivos[2]))
-        return df_1, df_2
+        df = pd.read_csv(os.path.join(caminho_pasta, arquivos[1]))
+        return df
     except (FileNotFoundError, PermissionError) as e:
         st.error(f'Erro ao carregar os dados: {e}')
-        return None, None
+        return None
 
 
 #app
@@ -49,16 +48,13 @@ with col2:
     st.title('ClimateFlow')
 #carregando dados
 pasta_dados = 'data'
-clima_descricao, clima_temperaturas = carrega_dados_recentes(pasta_dados)
-if clima_descricao is not None and clima_temperaturas is not None:
-    clima_descricao['datetime'] = pd.to_datetime(clima_descricao['datetime'])
-    clima_temperaturas['datetime'] = pd.to_datetime(clima_temperaturas['datetime'])
-    clima = pd.merge(clima_descricao, clima_temperaturas, on='datetime', how='left')
+df_clima = carrega_dados_recentes(pasta_dados)
+if df_clima is not None:
     #calculando temperatura mínima, máxima e média
-    st.dataframe(clima)
-    temp_min = clima['temp'].min()
-    temp_max = clima['temp'].max()
-    temp_media = clima['temp'].mean()
+    st.dataframe(df_clima)
+    temp_min = df_clima['temp'].min()
+    temp_max = df_clima['temp'].max()
+    temp_media = df_clima['temp'].mean()
     #cards
     st.subheader('Informações de Temperatura')
     st.write(f'Temperatura Mínima: {temp_min:.1f} °C')
@@ -66,7 +62,7 @@ if clima_descricao is not None and clima_temperaturas is not None:
     st.write(f'Temperatura Mediana: {temp_media:.1f} °C')
     #figuras
     st.subheader('Temperatura Diária')
-    fig_temp = go.Figure(data=[go.Scatter(x=clima['datetime'], y=clima['temp'], mode='lines', name='Temperatura')])
+    fig_temp = go.Figure(data=[go.Scatter(x=df_clima['datetime'], y=df_clima['temp'], mode='lines', name='Temperatura')])
     fig_temp.update_layout(
         xaxis_title='Data',
         yaxis_title='Temperatura (°C)',
@@ -75,9 +71,9 @@ if clima_descricao is not None and clima_temperaturas is not None:
     st.plotly_chart(fig_temp)
     st.subheader('Temperaturas Diárias (Mínima, Média, Máxima)')
     fig_temp_minmax = go.Figure()
-    fig_temp_minmax.add_trace(go.Scatter(x=clima['datetime'], y=clima['tempmin'], mode='lines', name='Temperatura Mínima'))
-    fig_temp_minmax.add_trace(go.Scatter(x=clima['datetime'], y=clima['temp'], mode='lines', name='Temperatura Média'))
-    fig_temp_minmax.add_trace(go.Scatter(x=clima['datetime'], y=clima['tempmax'], mode='lines', name='Temperatura Máxima'))
+    fig_temp_minmax.add_trace(go.Scatter(x=df_clima['datetime'], y=df_clima['tempmin'], mode='lines', name='Temperatura Mínima'))
+    fig_temp_minmax.add_trace(go.Scatter(x=df_clima['datetime'], y=df_clima['temp'], mode='lines', name='Temperatura Média'))
+    fig_temp_minmax.add_trace(go.Scatter(x=df_clima['datetime'], y=df_clima['tempmax'], mode='lines', name='Temperatura Máxima'))
     fig_temp_minmax.update_layout(
         xaxis_title='Data',
         yaxis_title='Temperatura (°C)',
@@ -86,9 +82,9 @@ if clima_descricao is not None and clima_temperaturas is not None:
     st.plotly_chart(fig_temp_minmax)
     st.subheader('Condições Climáticas')
     fig_condicoes = go.Figure()
-    fig_condicoes.add_trace(go.Bar(x=clima['datetime'], y=clima['icon'].apply(lambda x: 1 if x == 'rain' else 0), name='Chuva'))
-    fig_condicoes.add_trace(go.Bar(x=clima['datetime'], y=clima['icon'].apply(lambda x: 1 if x == 'partly-cloudy-day' else 0), name='Parcialmente Nublado'))
-    fig_condicoes.add_trace(go.Bar(x=clima['datetime'], y=clima['icon'].apply(lambda x: 1 if x == 'clear-day' else 0), name='Ensolarado'))
+    fig_condicoes.add_trace(go.Bar(x=df_clima['datetime'], y=df_clima['icon'].apply(lambda x: 1 if x == 'rain' else 0), name='Chuva'))
+    fig_condicoes.add_trace(go.Bar(x=df_clima['datetime'], y=df_clima['icon'].apply(lambda x: 1 if x == 'partly-cloudy-day' else 0), name='Parcialmente Nublado'))
+    fig_condicoes.add_trace(go.Bar(x=df_clima['datetime'], y=df_clima['icon'].apply(lambda x: 1 if x == 'clear-day' else 0), name='Ensolarado'))
     fig_condicoes.update_layout(
         xaxis_title='Data',
         yaxis_title='Frequência',
