@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-import numpy as np
 import os
 import warnings
 warnings.filterwarnings('ignore')
@@ -19,26 +18,18 @@ with open(file_path) as f:
 # -------------------------------------------------------------
 def carrega_dados_recentes(pasta_dados):
     '''
-        Carrega arquivos CSV mais recentes
+        Carrega arquivos CSV da semana mais recentes
     '''
-    pastas = False
     try:
         pastas = [f for f in os.listdir(pasta_dados) if os.path.isdir(os.path.join(pasta_dados, f))]
-    except:
-        pass
-    if pastas:
         pasta_mais_recente = max(pastas, key=lambda x: os.path.getmtime(os.path.join(pasta_dados, x)))
         caminho_pasta = os.path.join(pasta_dados, pasta_mais_recente)
         arquivos = [f for f in os.listdir(caminho_pasta) if f.endswith('.csv')]
-        if len(arquivos) >= 2:
-            path_1 = os.path.join(caminho_pasta, arquivos[0])
-            df_1 = pd.read_csv(path_1)
-            path_2 = os.path.join(caminho_pasta, arquivos[2])
-            df_2 = pd.read_csv(path_2)
-            return df_1, df_2
-        else:
-            return None, None
-    else:
+        df_1 = pd.read_csv(os.path.join(caminho_pasta, arquivos[0]))
+        df_2 = pd.read_csv(os.path.join(caminho_pasta, arquivos[2]))
+        return df_1, df_2
+    except (FileNotFoundError, PermissionError) as e:
+        st.error(f'Erro ao carregar os dados: {e}')
         return None, None
 
 
