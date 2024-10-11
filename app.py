@@ -19,8 +19,8 @@ with open(file_path) as f:
 # -------------------------------------------------------------
 def import_data(data_dir):
     '''
-        Carrega arquivos CSV da semana mais recentes, retorna DataFrame e
-        datas de início e fim do período
+        Load the most recent CSV files from the week, return a DataFrame and
+        the start and end dates of the period
     '''
     try:
         dirs = [f for f in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, f))]
