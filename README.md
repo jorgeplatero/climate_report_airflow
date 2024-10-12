@@ -1,2 +1,2 @@
-# relatorio_clima_airflow
-Dataviz com relatório climático desenvolvido com Streamlit e automatizado com Airflow.
+# climate_report_airflow
+Dataviz Streamlit containing a climate report and automated by Airflow.
