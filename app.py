@@ -27,7 +27,7 @@ def import_data(data_dir):
         last_dir = max(dirs, key=lambda x: os.path.getmtime(os.path.join(data_dir, x)))
         dir_path = os.path.join(data_dir, last_dir)
         files = [f for f in os.listdir(dir_path) if f.endswith('.csv')]
-        last_file = os.path.join(dir_path, files[0])
+        last_file = os.path.join(dir_path, files[2])
         date_start = datetime.fromtimestamp(os.path.getmtime(last_file))
         date_end = date_start + timedelta(days=7)
         df = pd.read_csv(last_file)
