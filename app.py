@@ -90,7 +90,7 @@ if df is not None:
         for i, icon in enumerate(df['icon']):
             col = cols[i % col_num]
             with col:
-                st.image(f'img/{icon}.png', caption = datetime.strptime(df['datetime'][i], '%Y-%m-%d').strftime('%A'))
+                st.image(f'img/icons/{icon}.png', caption = datetime.strptime(df['datetime'][i], '%Y-%m-%d').strftime('%A'))
 else:
     st.error('No data available')
 
