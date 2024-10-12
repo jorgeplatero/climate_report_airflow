@@ -33,7 +33,7 @@ def import_data(data_dir):
         df = pd.read_csv(last_file)
         return df, date_start, date_end
     except:
-        return None
+        return None, None, None
 
 
 #app
