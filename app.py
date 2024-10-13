@@ -18,21 +18,37 @@ with open(file_path) as f:
 #functions
 # -------------------------------------------------------------
 def import_data(data_dir):
-    '''
+    """
         Load the most recent CSV files from the week, return a DataFrame and
-        the start and end dates of the period
-    '''
+        the start and end dates of the period. Delete the oldest directory if there are more than 4.
+    """
     try:
         dirs = [f for f in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, f))]
-        last_dir = max(dirs, key=lambda x: os.path.getmtime(os.path.join(data_dir, x)))
+        #sort directories by modification time (oldest first)
+        dirs.sort(key=lambda x: os.path.getmtime(os.path.join(data_dir, x)))
+        #delete oldest directory if more than 4
+        if len(dirs) > 4:
+            oldest_dir = os.path.join(data_dir, dirs[0])
+            # Delete files in the directory before deleting the directory
+            for filename in os.listdir(oldest_dir):
+                file_path = os.path.join(oldest_dir, filename)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            # Delete the directory itself
+            os.rmdir(oldest_dir)
+            dirs = dirs[1:]  #eemove oldest from the list
+        #find the last directory
+        last_dir = dirs[-1]
         dir_path = os.path.join(data_dir, last_dir)
         files = [f for f in os.listdir(dir_path) if f.endswith('.csv')]
         last_file = os.path.join(dir_path, files[0])
+        
         date_start = datetime.fromtimestamp(os.path.getmtime(last_file))
         date_end = date_start + timedelta(days=7)
         df = pd.read_csv(last_file)
         return df, date_start, date_end
-    except:
+    except Exception as e:
+        print(f'Error importing data: {e}')
         return None, None, None
 
 
