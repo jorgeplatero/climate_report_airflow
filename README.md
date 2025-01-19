@@ -8,8 +8,8 @@ This repository contains a Streamlit app with data that is updated by an Airflow
 
 **Key Features:**
 
-* Airflow orchestration: core data processing tasks are orchestrated by Airflow, ensuring reliable execution and scheduling.
-* Streamlit interface: an user-friendly Streamlit report provides interactive visualizations, progress monitoring, and intuitive exploration of the retrieved data.
+* Airflow orchestration: core data processing tasks are orchestrated by Airflow, ensuring reliable execution and scheduling
+* Streamlit interface: an user-friendly Streamlit report provides interactive visualizations, progress monitoring, and intuitive exploration of the retrieved data
 
 **Benefits:**
 
@@ -24,4 +24,4 @@ This repository contains a Streamlit app with data that is updated by an Airflow
 
 ## App Link 
 
-Streamlit report: <a style='text-decoration: none;' href='https://climatereportairflow-rcxif2zhzgarpappowdc2qi.streamlit.app/' target='_blank'>link</a>.
+Streamlit report: <a style='text-decoration: none;' href='https://climatereportairflow.streamlit.app/' target='_blank'>link</a>.
