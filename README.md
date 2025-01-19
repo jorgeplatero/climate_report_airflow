@@ -13,8 +13,8 @@ This repository contains a Streamlit app with data that is updated by an Airflow
 
 **Benefits:**
 
-* Efficiency: automation of repetitive data tasks.
-* Enhanced collaboration: insights and results can be easily shared with colleagues through an interactive report.
+* Efficiency: automation of repetitive data tasks
+* Enhanced collaboration: insights and results can be easily shared with colleagues through an interactive report
 
 ## Technologies
 
