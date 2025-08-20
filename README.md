@@ -1,4 +1,4 @@
-# ClimateFlow: a Streamlit app automated by Airflow.
+# ClimateFlow: a Streamlit app automated by Airflow
 
 <img src='https://github.com/jorgeplatero/climate_report_airflow/blob/ec130de4cdeedd8968b1e5e26e7417a3c75403d3/img/logo.png' width='150'/>
 
